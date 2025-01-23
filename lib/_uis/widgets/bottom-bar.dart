@@ -1,32 +1,69 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:tt_flutter_airdrop_service/_router/router.gr.dart';
 
-class BottomBarWidget extends StatelessWidget {
+class BottomBarWidget extends StatefulWidget {
   const BottomBarWidget({super.key});
 
   @override
+  State<BottomBarWidget> createState() => BottomBarWidgetState();
+}
+
+class BottomBarWidgetState extends State<BottomBarWidget> {
+  int _selectedIndex = 0;
+
+  @override
   Widget build(BuildContext context) {
-    return BottomAppBar(
-      child: Flex(
-        direction: Axis.horizontal,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          IconButton(
-            onPressed: null,
+    return NavigationBar(
+      selectedIndex: _selectedIndex,
+      labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+      destinations: <Widget>[
+        NavigationDestination(
+          icon: IconButton(
+            onPressed: () {
+              context.router.push(HomeRoute());
+              setState(() {
+                _selectedIndex = 0;
+              });
+            },
             icon: Icon(Icons.home_sharp),
-            tooltip: 'Home',
+            hoverColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
           ),
-          IconButton(
-            onPressed: null,
+          label: 'Home',
+        ),
+        NavigationDestination(
+          icon: IconButton(
+            onPressed: () {
+              context.router.push(AirdropRoute());
+              setState(() {
+                _selectedIndex = 1;
+              });
+            },
             icon: Icon(Icons.touch_app_outlined),
-            tooltip: 'Airdrop',
+            hoverColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
           ),
-          IconButton(
-            onPressed: null,
+          label: 'Airdrop',
+        ),
+        NavigationDestination(
+          icon: IconButton(
+            onPressed: () {
+              context.router.push(DepinRoute());
+              setState(() {
+                _selectedIndex = 2;
+              });
+            },
             icon: Icon(Icons.multiline_chart_sharp),
-            tooltip: 'Depin',
+            hoverColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
           ),
-        ],
-      ),
+          label: 'Depin',
+        ),
+      ],
     );
   }
 }
