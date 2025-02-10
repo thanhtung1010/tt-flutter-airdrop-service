@@ -13,6 +13,26 @@ class BottomBarWidgetState extends State<BottomBarWidget> {
   int _selectedIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    if (context.router.isRouteActive('HomeRoute')) {
+      setState(() {
+        _selectedIndex = 0;
+      });
+    }
+    if (context.router.isRouteActive('AirdropRoute')) {
+      setState(() {
+        _selectedIndex = 1;
+      });
+    }
+    if (context.router.isRouteActive('DepinRoute')) {
+      setState(() {
+        _selectedIndex = 2;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BottomAppBar(
       shape: CircularNotchedRectangle(),
@@ -44,10 +64,12 @@ class BottomBarWidgetState extends State<BottomBarWidget> {
                 spacing: 4,
                 children: <Widget>[
                   Icon(Icons.home_outlined),
-                  _selectedIndex == 0 ? Text(
-                    'Home',
-                    style: TextStyle(color: Colors.white),
-                  ) : Text(''),
+                  _selectedIndex == 0
+                      ? Text(
+                          'Home',
+                          style: TextStyle(color: Colors.white),
+                        )
+                      : Text(''),
                 ],
               ),
             ),
@@ -71,10 +93,12 @@ class BottomBarWidgetState extends State<BottomBarWidget> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Icon(Icons.touch_app_outlined),
-                  _selectedIndex == 1 ? Text(
-                    'Tap',
-                    style: TextStyle(color: Colors.white),
-                  ) : Text(''),
+                  _selectedIndex == 1
+                      ? Text(
+                          'Tap',
+                          style: TextStyle(color: Colors.white),
+                        )
+                      : Text(''),
                 ],
               ),
             ),
@@ -92,16 +116,18 @@ class BottomBarWidgetState extends State<BottomBarWidget> {
                 iconSize: 25,
                 textStyle: TextStyle(color: Colors.white),
               ),
-              child: Flex( 
+              child: Flex(
                 direction: Axis.horizontal,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Icon(Icons.multiline_chart_sharp),
-                  _selectedIndex == 2 ? Text(
-                    'Depin',
-                    style: TextStyle(color: Colors.white),
-                  ) : Text(''),
+                  _selectedIndex == 2
+                      ? Text(
+                          'Depin',
+                          style: TextStyle(color: Colors.white),
+                        )
+                      : Text(''),
                 ],
               ),
             ),
