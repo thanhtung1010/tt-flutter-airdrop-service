@@ -74,7 +74,6 @@ class _AirdropPageState extends State<AirdropPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Airdrop List')),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(
@@ -82,23 +81,27 @@ class _AirdropPageState extends State<AirdropPage> {
             FiltersWidget(
               onSearch: _onSearch,
               onReset: _onReset,
-              customButton: ElevatedButton.icon(
+              customButton: IconButton(
                 onPressed: _addNewItem,
-                icon: Icon(Icons.add),
-                label: Text("Add New"),
+                icon: Icon(Icons.add, color: Colors.white,),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                tooltip: "Add Account",
               ),
               customFilters: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                      ],
+                    SizedBox(
+                      width: 250,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(50)),
+                          labelText: 'Search',
+                        ),
+                      ),
                     ),
-
-                    // Radio Button chọn Priority
+                    SizedBox(height: 10,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -165,12 +168,14 @@ class _AirdropPageState extends State<AirdropPage> {
             IconButton(
               icon: Icon(Icons.edit, color: Colors.blue),
               onPressed: () => _editItem(index),
+              tooltip: "Edit",
             ),
 
             // Nút Delete
             IconButton(
               icon: Icon(Icons.delete, color: Colors.red),
               onPressed: () => _deleteItem(index),
+              tooltip: "Delete",
             ),
           ],
         ),

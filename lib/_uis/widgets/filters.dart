@@ -53,12 +53,14 @@ class FiltersWidget extends StatelessWidget {
       children: [
         IconButton(
           onPressed: onSearch,
-          icon: Icon(Icons.search)
+          icon: Icon(Icons.search),
+          tooltip: "Search",
         ),
         SizedBox(width: 4),
         IconButton(
           onPressed: onReset,
-          icon: Icon(Icons.restore)
+          icon: Icon(Icons.refresh),
+          tooltip: "Reset",
         ),
         if (customButton != null) ...[
           SizedBox(width: 4),
