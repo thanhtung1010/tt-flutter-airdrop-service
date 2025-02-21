@@ -5,14 +5,14 @@ import 'dart:math' as math;
 import 'package:tt_flutter_airdrop_service/_uis/widgets/filters.dart';
 
 @RoutePage()
-class AirdropPage extends StatefulWidget {
-  const AirdropPage({super.key});
+class TapPage extends StatefulWidget {
+  const TapPage({super.key});
 
   @override
-  State<AirdropPage> createState() => _AirdropPageState();
+  State<TapPage> createState() => _TapPageState();
 }
 
-class _AirdropPageState extends State<AirdropPage> {
+class _TapPageState extends State<TapPage> {
   final TextEditingController _searchController = TextEditingController();
   String _selectedPriority = 'All';
 

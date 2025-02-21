@@ -20,7 +20,7 @@ class BottomBarWidgetState extends State<BottomBarWidget> {
         _selectedIndex = 0;
       });
     }
-    if (context.router.isRouteActive('AirdropRoute')) {
+    if (context.router.isRouteActive('TapRoute')) {
       setState(() {
         _selectedIndex = 1;
       });
@@ -75,8 +75,8 @@ class BottomBarWidgetState extends State<BottomBarWidget> {
             ),
             TextButton(
               onPressed: () {
-                if (!context.router.isRouteActive('AirdropRoute')) {
-                  context.router.push(AirdropRoute());
+                if (!context.router.isRouteActive('TapRoute')) {
+                  context.router.push(TapRoute());
                 }
                 setState(() {
                   _selectedIndex = 1;

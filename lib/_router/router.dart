@@ -15,8 +15,8 @@ class AppRouter extends RootStackRouter {
           page: HomeRoute.page,
         ),
         MaterialRoute(
-          path: 'airdrop',
-          page: AirdropRoute.page,
+          path: 'tap',
+          page: TapRoute.page,
         ),
         MaterialRoute(
           path: 'depin',
