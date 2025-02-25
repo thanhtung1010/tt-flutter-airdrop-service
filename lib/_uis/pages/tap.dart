@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:tt_flutter_airdrop_service/_uis/screens/add-tap-info.dart';
 import 'dart:math' as math;
 
 import 'package:tt_flutter_airdrop_service/_uis/widgets/filters.dart';
@@ -48,8 +49,17 @@ class _TapPageState extends State<TapPage> {
     }).toList();
   }
 
-  void _addNewItem() {
-    // Logic thêm item mới (tùy theo yêu cầu)
+  void onclickAddTapInformation() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AddTapAccountPopup();
+      },
+    ).then(<DocumentReference>(value) {
+      if (value != null) {
+        print('get list');
+      }
+    });
   }
 
   void _editItem(int index) {
@@ -82,8 +92,11 @@ class _TapPageState extends State<TapPage> {
               onSearch: _onSearch,
               onReset: _onReset,
               customButton: IconButton(
-                onPressed: _addNewItem,
-                icon: Icon(Icons.add, color: Colors.white,),
+                onPressed: onclickAddTapInformation,
+                icon: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
                 tooltip: "Add Account",
               ),
@@ -96,18 +109,22 @@ class _TapPageState extends State<TapPage> {
                       width: 250,
                       child: TextField(
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(50)),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50)),
                           labelText: 'Search',
                         ),
                       ),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("Priority:"),
                         Row(
-                          children: ['All', 'High', 'Medium', 'Low'].map((priority) {
+                          children:
+                              ['All', 'High', 'Medium', 'Low'].map((priority) {
                             return Row(
                               children: [
                                 Radio<String>(
@@ -130,9 +147,7 @@ class _TapPageState extends State<TapPage> {
                 ),
               ),
             ),
-
             SizedBox(height: 10),
-
             Expanded(
               child: ListView.builder(
                 itemCount: filteredList.length,
@@ -156,10 +171,13 @@ class _TapPageState extends State<TapPage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withValues(),
+          backgroundColor:
+              Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
+                  .withValues(),
           child: Text(item['avatar']),
         ),
-        title: Text(item['name'], style: TextStyle(fontWeight: FontWeight.bold)),
+        title:
+            Text(item['name'], style: TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Text(item['phone']),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
@@ -183,5 +201,3 @@ class _TapPageState extends State<TapPage> {
     );
   }
 }
-
-
