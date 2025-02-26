@@ -1,8 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:tt_flutter_airdrop_service/_uis/screens/add-tap-info.dart';
 import 'dart:math' as math;
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tt_flutter_airdrop_service/_uis/screens/add_airdrop_project.dart';
+import 'package:tt_flutter_airdrop_service/_uis/screens/add_tap_info.dart';
 import 'package:tt_flutter_airdrop_service/_uis/widgets/filters.dart';
 
 @RoutePage()
@@ -16,44 +17,55 @@ class TapPage extends StatefulWidget {
 class _TapPageState extends State<TapPage> {
   final TextEditingController _searchController = TextEditingController();
   String _selectedPriority = 'All';
+  CollectionReference tapInformation =
+      FirebaseFirestore.instance.collection('TAP_INFORMATION');
+  List<Map<String, dynamic>> airdropList = [];
 
-  List<Map<String, dynamic>> airdropList = [
-    {
-      'avatar': 'JD',
-      'name': 'John Doe',
-      'phone': '123-456-7890',
-      'priority': 'High'
-    },
-    {
-      'avatar': 'AS',
-      'name': 'Alice Smith',
-      'phone': '987-654-3210',
-      'priority': 'Medium'
-    },
-    {
-      'avatar': 'BJ',
-      'name': 'Bob Johnson',
-      'phone': '555-666-7777',
-      'priority': 'Low'
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    getTapInforList().then((resp) {
+      setState(() {
+        airdropList = resp;
+      });
+    });
+  }
 
-  List<Map<String, dynamic>> get filteredList {
-    return airdropList.where((item) {
-      bool matchName = item['name']
-          .toLowerCase()
-          .contains(_searchController.text.toLowerCase());
-      bool matchPriority =
-          _selectedPriority == 'All' || item['priority'] == _selectedPriority;
-      return matchName && matchPriority;
-    }).toList();
+  Future<List<Map<String, dynamic>>> getTapInforList(
+      {Map<String, dynamic>? filters}) async {
+    try {
+      QuerySnapshot querySnapshot = await tapInformation.get();
+      return querySnapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>)
+          .toList();
+    } catch (e) {
+      print("Lỗi khi lấy dữ liệu: $e");
+      return [];
+    }
   }
 
   void onclickAddTapInformation() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AddTapAccountPopup();
+        return AddTapAccount();
+      },
+    ).then(<DocumentReference>(value) {
+      if (value != null) {
+        getTapInforList().then((resp) {
+          setState(() {
+            airdropList = resp;
+          });
+        });
+      }
+    });
+  }
+
+  void onclickAddAirdrop() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AddAirdropProject();
       },
     ).then(<DocumentReference>(value) {
       if (value != null) {
@@ -77,8 +89,22 @@ class _TapPageState extends State<TapPage> {
     setState(() {});
   }
 
-  void _onSearch() {
-    print("Search Clicked!");
+  void onSearch() {
+    print('click search');
+    getTapInforList().then((resp) {
+      setState(() {
+        airdropList = resp;
+      });
+      print(resp);
+    });
+  }
+
+  void handleMenuSelection(String value) {
+    if (value == 'add_tap') {
+      onclickAddTapInformation();
+    } else if (value == 'add_airdrop') {
+      onclickAddAirdrop();
+    }
   }
 
   @override
@@ -89,17 +115,34 @@ class _TapPageState extends State<TapPage> {
         child: Column(
           children: [
             FiltersWidget(
-              onSearch: _onSearch,
+              onSearch: onSearch,
               onReset: _onReset,
-              customButton: IconButton(
-                onPressed: onclickAddTapInformation,
-                icon: Icon(
-                  Icons.add,
-                  color: Colors.white,
+              customButton: PopupMenuButton<String>(
+                onSelected: handleMenuSelection,
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: 'add_tap',
+                    child: Text('Add Tap'),
+                  ),
+                  PopupMenuItem(
+                    value: 'add_airdrop',
+                    child: Text('Add Airdrop'),
+                  ),
+                ],
+                child: Icon(
+                  Icons.add_circle,
+                  color: Colors.green,
                 ),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                tooltip: "Add Account",
               ),
+              // customButton: IconButton(
+              //   onPressed: onclickAddTapInformation,
+              //   icon: Icon(
+              //     Icons.add,
+              //     color: Colors.white,
+              //   ),
+              //   style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+              //   tooltip: "Add Account",
+              // ),
               customFilters: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(
@@ -150,9 +193,9 @@ class _TapPageState extends State<TapPage> {
             SizedBox(height: 10),
             Expanded(
               child: ListView.builder(
-                itemCount: filteredList.length,
+                itemCount: airdropList.length,
                 itemBuilder: (context, index) {
-                  var item = filteredList[index];
+                  var item = airdropList[index];
                   return _buildAirdropCard(item, index);
                 },
               ),
@@ -170,12 +213,12 @@ class _TapPageState extends State<TapPage> {
       elevation: 3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor:
-              Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
-                  .withValues(),
-          child: Text(item['avatar']),
-        ),
+        // leading: CircleAvatar(
+        //   backgroundColor:
+        //       Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
+        //           .withValues(),
+        //   child: Text(item['avatar']),
+        // ),
         title:
             Text(item['name'], style: TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Text(item['phone']),

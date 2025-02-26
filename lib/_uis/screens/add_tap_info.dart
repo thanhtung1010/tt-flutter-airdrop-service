@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AddTapAccountPopup extends StatefulWidget {
-  const AddTapAccountPopup({super.key});
+class AddTapAccount extends StatefulWidget {
+  const AddTapAccount({super.key});
 
   @override
-  State<AddTapAccountPopup> createState() => _AddTapAccountPopupState();
+  State<AddTapAccount> createState() => _AddTapAccountState();
 }
 
-class _AddTapAccountPopupState extends State<AddTapAccountPopup> {
+class _AddTapAccountState extends State<AddTapAccount> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
